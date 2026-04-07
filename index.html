@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Podología | Luís Céspedes</title>
+    <meta name="description" content="Centro integral de podología a cargo del especialista Luís Céspedes. Atención personalizada, salud y cuidado para tus pies.">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (CDN for static GitHub Pages hosting) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind Configuration & Custom Styles -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9',
+                        secondary: '#0369a1',
+                        accent: '#e0f2fe'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc;
+        }
+        .hero-pattern {
+            background-color: #f0f9ff;
+            background-image: radial-gradient(#bae6fd 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800 flex flex-col min-h-screen">
+    
+    <!-- Header / Banner -->
+    <div class="hero-pattern pt-12 pb-24 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-blue-300"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <!-- Logo / Avatar -->
+            <div class="w-32 h-32 mx-auto bg-white rounded-full shadow-lg flex items-center justify-center mb-6 border-4 border-white overflow-hidden">
+                <!-- If logo de podologia.jpeg exists in this folder it will show up, otherwise an icon is shown via the fallback -->
+                <img src="logo de podologia.jpeg" alt="Logo Podología" class="w-full h-full object-cover" onerror="this.onerror=null; this.outerHTML='<i class=\'fa-solid fa-user-doctor text-5xl text-primary\'></i>';">
+            </div>
+            
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Luís Céspedes</h1>
+            <p class="text-lg text-primary font-semibold uppercase tracking-wide">Centro de Podología</p>
+            <p class="mt-4 text-gray-600 max-w-lg mx-auto">Especialistas en el cuidado y la salud integral de tus pies. Recupera tu bienestar con atención profesional de primer nivel.</p>
+        </div>
+    </div>
+
+    <!-- Main Content (Links & Contact) -->
+    <div class="container mx-auto px-4 -mt-16 relative z-20 flex-grow">
+        <div class="max-w-md mx-auto">
+            
+            <!-- Turnos via WhatsApp con Selector -->
+            <div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center mb-6 shadow-md text-gray-800 relative z-20">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-3xl mb-4">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <h2 class="text-xl font-bold mb-1">Reserva tu Turno</h2>
+                <p class="text-gray-500 text-sm mb-4">Selecciona el motivo de tu consulta para brindarte una mejor atención.</p>
+                
+                <select id="motivoConsulta" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50 p-3 bg-gray-50 mb-3 text-gray-700 outline-none">
+                    <option value="" disabled selected>Elige un servicio...</option>
+                    <option value="Atención integral del pie">Atención integral del pie</option>
+                    <option value="Tratamiento de afecciones dermatológicas">Tratamiento de afecciones dermatológicas</option>
+                    <option value="Cuidado para paciente diabético">Cuidado para paciente diabético</option>
+                    <option value="Quiropodia (corte de uñas y callosidades)">Quiropodia (corte de uñas y callosidades)</option>
+                    <option value="Tratamiento de uña encarnada">Tratamiento de uña encarnada</option>
+                    <option value="Consulta general">Consulta general</option>
+                </select>
+
+                <div class="flex items-start mb-2 w-full text-left bg-green-50 p-3 rounded-lg border border-green-100">
+                    <input type="checkbox" id="domicilioCheck" class="w-5 h-5 mt-0.5 text-green-600 rounded border-gray-300 focus:ring-green-500 mr-3 cursor-pointer">
+                    <label for="domicilioCheck" class="text-sm text-gray-700 font-medium cursor-pointer">Requiero atención a domicilio (Adjuntar mi ubicación por GPS)</label>
+                </div>
+                <p id="geoStatus" class="text-xs text-blue-500 mb-4 hidden w-full text-left ml-2">Obteniendo ubicación...</p>
+
+                <a id="btnWhatsapp" href="https://wa.me/5492613069719?text=Hola%20Luís,%20quisiera%20reservar%20un%20turno%20para%20consulta." target="_blank" class="px-6 py-3 bg-green-500 text-white rounded-xl font-semibold text-md w-full transition duration-300 transform hover:-translate-y-1 hover:bg-green-600 hover:shadow-lg flex items-center justify-center">
+                    <i class="fa-brands fa-whatsapp mr-2 text-lg"></i> Enviar Mensaje
+                </a>
+            </div>
+
+            <script>
+                var userLocation = "";
+                
+                function updateWhatsappLink() {
+                    var select = document.getElementById('motivoConsulta');
+                    var motivo = select.value || "una consulta";
+                    var baseText = "Hola Luís, quisiera reservar un turno para: " + motivo + ".";
+                    
+                    if (document.getElementById('domicilioCheck').checked) {
+                        if (userLocation) {
+                            baseText += "\n\nRequiero atención a domicilio. Mi ubicación actual es: " + userLocation;
+                        } else {
+                            baseText += "\n\nRequiero atención a domicilio.";
+                        }
+                    }
+                    
+                    var link = "https://wa.me/5492613069719?text=" + encodeURIComponent(baseText);
+                    document.getElementById('btnWhatsapp').href = link;
+                }
+
+                document.getElementById('motivoConsulta').addEventListener('change', updateWhatsappLink);
+                
+                document.getElementById('domicilioCheck').addEventListener('change', function(e) {
+                    var statusEl = document.getElementById('geoStatus');
+                    if (e.target.checked) {
+                        statusEl.classList.remove('hidden');
+                        statusEl.className = "text-xs font-semibold mb-4 w-full text-left ml-2 text-blue-500";
+                        statusEl.textContent = "📍 Solicitando permiso de ubicación...";
+                        
+                        if ("geolocation" in navigator) {
+                            navigator.geolocation.getCurrentPosition(function(position) {
+                                var lat = position.coords.latitude;
+                                var lng = position.coords.longitude;
+                                userLocation = "https://www.google.com/maps?q=" + lat + "," + lng;
+                                statusEl.className = "text-xs font-semibold mb-4 w-full text-left ml-2 text-green-600";
+                                statusEl.textContent = "✅ ¡Ubicación GPS obtenida con éxito!";
+                                updateWhatsappLink();
+                            }, function(error) {
+                                statusEl.className = "text-xs font-semibold mb-4 w-full text-left ml-2 text-red-500";
+                                statusEl.textContent = "❌ Ubicación denegada. Envíala luego por chat.";
+                                updateWhatsappLink();
+                            }, { timeout: 10000 });
+                        } else {
+                            statusEl.className = "text-xs font-semibold mb-4 w-full text-left ml-2 text-red-500";
+                            statusEl.textContent = "Tu navegador no soporta GPS.";
+                        }
+                    } else {
+                        statusEl.classList.add('hidden');
+                        userLocation = "";
+                        updateWhatsappLink();
+                    }
+                });
+            </script>
+
+            <!-- Ubicación -->
+            <a href="https://maps.app.goo.gl/HxQV93sffKJvFEhL9?g_st=am" target="_blank" class="glass-card rounded-2xl p-6 flex flex-col items-center text-center mb-6 transform transition duration-300 hover:-translate-y-1 hover:shadow-xl group no-underline text-gray-800 block">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-primary text-3xl mb-4 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <h2 class="text-xl font-bold mb-1 group-hover:text-primary transition-colors">Nuestra Ubicación</h2>
+                <p class="text-gray-500 text-sm">Encuentra cómo llegar a nuestro consultorio en Google Maps.</p>
+                <div class="mt-4 px-6 py-2 bg-primary text-white rounded-full font-semibold text-sm w-full transition group-hover:bg-secondary">
+                    Abrir Mapa
+                </div>
+            </a>
+
+            <!-- Servicios Destacados -->
+            <div class="glass-card rounded-2xl p-6 mb-8 text-center">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 border-b border-gray-100 pb-2">Servicios Brindados</h3>
+                <ul class="text-sm text-gray-600 space-y-3 text-left">
+                    <li class="flex items-center"><i class="fa-solid fa-check text-primary mr-3"></i> Atención integral del pie</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-primary mr-3"></i> Tratamiento de afecciones dermatológicas</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-primary mr-3"></i> Prevención y cuidado para pacientes diabéticos</li>
+                    <li class="flex items-center"><i class="fa-solid fa-check text-primary mr-3"></i> Quiropodia (corte de uñas, durezas y callosidades)</li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-6 text-center text-sm mt-auto">
+        <div class="container mx-auto px-4">
+            <p>&copy; 2026 Centro de Podología Luís Céspedes.<br>Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
