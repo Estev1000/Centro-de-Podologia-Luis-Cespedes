@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Centro de Podología | Luís Céspedes</title>
     <meta name="description" content="Centro integral de podología a cargo del especialista Luís Céspedes. Atención personalizada, salud y cuidado para tus pies.">
-    
+    <!-- PWA & Mobile Icons -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0ea5e9">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="logo%20de%20podologia.jpeg">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     
@@ -176,6 +183,78 @@
                     <li class="flex items-center"><i class="fa-solid fa-check text-primary mr-3"></i> Quiropodia (corte de uñas, durezas y callosidades)</li>
                 </ul>
             </div>
+
+            <!-- Instalar App -->
+            <div id="installCard" class="glass-card rounded-2xl p-6 flex flex-col items-center text-center mb-6 shadow-md text-gray-800 relative z-20 cursor-pointer transition transform hover:-translate-y-1 hover:shadow-xl">
+                <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center text-primary text-3xl mb-4">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                </div>
+                <h2 class="text-xl font-bold mb-1">Instalar Aplicación</h2>
+                <p class="text-gray-500 text-sm mb-4">Agrega el acceso directo en el inicio de tu teléfono para un acceso rápido y sencillo.</p>
+                <button id="btnInstallApp" class="px-6 py-3 bg-gradient-to-r from-primary to-blue-400 text-white rounded-xl font-semibold text-md w-full transition duration-300 transform hover:-translate-y-1 hover:shadow-lg flex items-center justify-center border-none cursor-pointer">
+                    <i class="fa-solid fa-download mr-2 text-lg"></i> Instalar ahora
+                </button>
+            </div>
+
+            <script>
+                // PWA Installation Logic
+                let deferredPrompt;
+                const installCard = document.getElementById('installCard');
+                const btnInstallApp = document.getElementById('btnInstallApp');
+
+                // Detect iOS
+                const isIos = () => {
+                  const userAgent = window.navigator.userAgent.toLowerCase();
+                  return /iphone|ipad|ipod/.test(userAgent);
+                };
+
+                // Detect if already installed (standalone mode)
+                const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+                if (isIos() && !isInStandaloneMode()) {
+                    // Show install card for iOS with instructions
+                    btnInstallApp.addEventListener('click', () => {
+                        alert('Para instalar en iPhone: Toca el botón "Compartir" (el cuadrado con la flecha hacia arriba) en el menú inferior del navegador y luego selecciona "Agregar a inicio".');
+                    });
+                } else {
+                    // Fallback para cuando lo toquen sin que haya cargado el evento de instalación (ej: en PC directamente)
+                    btnInstallApp.addEventListener('click', async () => {
+                        if (deferredPrompt) {
+                            // Show the install prompt
+                            deferredPrompt.prompt();
+                            // Wait for the user to respond to the prompt
+                            const { outcome } = await deferredPrompt.userChoice;
+                            // We've used the prompt, and can't use it again, throw it away
+                            deferredPrompt = null;
+                            installCard.classList.add('hidden');
+                        } else {
+                            alert('Para instalarla, abre este enlace desde tu celular. Si ya estás en el celular, busca la opción "Instalar aplicación" o "Agregar a la pantalla de inicio" en el menú de tu navegador.');
+                        }
+                    });
+                }
+
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    // Prevent the mini-infobar from appearing on mobile
+                    e.preventDefault();
+                    // Stash the event so it can be triggered later.
+                    deferredPrompt = e;
+                });
+
+                window.addEventListener('appinstalled', () => {
+                    installCard.classList.add('hidden');
+                });
+
+                // Register Service Worker
+                if ('serviceWorker' in navigator) {
+                    window.addEventListener('load', function() {
+                        navigator.serviceWorker.register('sw.js').then(function(registration) {
+                            console.log('ServiceWorker registration successful');
+                        }, function(err) {
+                            console.log('ServiceWorker registration failed: ', err);
+                        });
+                    });
+                }
+            </script>
             
         </div>
     </div>
