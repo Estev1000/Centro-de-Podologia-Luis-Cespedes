@@ -2,19 +2,53 @@
   "name": "Luís Céspedes Podología",
   "short_name": "Podología",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f8fafc",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
   "theme_color": "#0ea5e9",
+  "description": "Centro integral de podología especializado en el cuidado y la salud de tus pies",
+  "categories": ["medical", "business"],
   "icons": [
     {
-      "src": "logo%20de%20podologia.jpeg",
+      "src": "logo-podologia.jpeg",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any"
     },
     {
-      "src": "logo%20de%20podologia.jpeg",
+      "src": "logo-podologia.jpeg",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "logo-podologia.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "logo-podologia.jpeg",
+      "sizes": "540x720",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Reservar turno",
+      "short_name": "Turno",
+      "description": "Reserva tu turno por WhatsApp",
+      "url": "./?mode=booking",
+      "icons": [
+        {
+          "src": "logo-podologia.jpeg",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
